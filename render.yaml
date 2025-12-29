@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        value: file:./dev.db
+    # Note: SQLite database is ephemeral on Render Web Services unless using a Disk.
+    # Data will be lost on redeploy/restart.
+
+  - type: static
+    name: frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: backend
+          property: url
