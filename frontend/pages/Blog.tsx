@@ -17,7 +17,8 @@ const Blog: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/blog-posts')
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    fetch(`${API_URL}/api/blog-posts`)
       .then(res => res.json())
       .then(data => {
         setPosts(data);
