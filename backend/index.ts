@@ -13,6 +13,10 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('Backend is running.');
+});
+
 app.get('/api/blog-posts', async (req, res) => {
   try {
     const posts = await prisma.blogPost.findMany();
