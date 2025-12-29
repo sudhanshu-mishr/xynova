@@ -2,6 +2,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Install OpenSSL required by Prisma
+RUN apk add --no-cache openssl
+
 # Copy backend package files relative to the build context (root)
 COPY backend/package*.json ./
 COPY backend/prisma ./prisma/
@@ -12,7 +15,8 @@ RUN npm install
 COPY backend/ .
 
 RUN npm run build
-RUN npx prisma generate
+# Set a dummy DATABASE_URL for prisma generate to pass validation
+RUN DATABASE_URL="file:./dev.db" npx prisma generate
 
 EXPOSE 3000
 
