@@ -2,12 +2,14 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-COPY prisma ./prisma/
+# Copy backend package files relative to the build context (root)
+COPY backend/package*.json ./
+COPY backend/prisma ./prisma/
 
 RUN npm install
 
-COPY . .
+# Copy the rest of the backend code
+COPY backend/ .
 
 RUN npm run build
 RUN npx prisma generate

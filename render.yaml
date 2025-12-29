@@ -2,7 +2,7 @@ services:
   - type: web
     name: backend
     env: docker
-    rootDir: backend
+    rootDir: .
     envVars:
       - key: PORT
         value: 3000
