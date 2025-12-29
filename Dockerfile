@@ -9,14 +9,17 @@ RUN apk add --no-cache openssl
 COPY backend/package*.json ./
 COPY backend/prisma ./prisma/
 
+# Set a dummy DATABASE_URL for prisma generate to pass validation during npm install (postinstall)
+ENV DATABASE_URL="file:./dev.db"
+
 RUN npm install
 
 # Copy the rest of the backend code
 COPY backend/ .
 
 RUN npm run build
-# Set a dummy DATABASE_URL for prisma generate to pass validation
-RUN DATABASE_URL="file:./dev.db" npx prisma generate
+# Prisma Client is generated during postinstall, but we can regenerate to be sure
+RUN npx prisma generate
 
 EXPOSE 3000
 
